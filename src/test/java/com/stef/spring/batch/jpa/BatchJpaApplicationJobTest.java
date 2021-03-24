@@ -41,7 +41,7 @@ import static org.junit.Assert.assertThat;
 @Slf4j
 class BatchJpaApplicationJobTest {
     @Autowired
-    @Qualifier("JobA")
+    @Qualifier("jobPrincipal")
     private Job job;
 
     @Autowired
@@ -64,7 +64,7 @@ class BatchJpaApplicationJobTest {
         JobInstance actualJobInstance = jobExecution.getJobInstance();
         ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 //
-        assertThat(actualJobInstance.getJobName(), is("listStudentsJob"));
+        assertThat(actualJobInstance.getJobName(), is("jobPrincipal"));
         assertThat(actualJobExitStatus.getExitCode(), is("COMPLETED"));
     }
     @Test
@@ -75,7 +75,7 @@ class BatchJpaApplicationJobTest {
         JobInstance actualJobInstance = jobExecution.getJobInstance();
         ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 //
-        assertThat(actualJobInstance.getJobName(), is("listStudentsJob"));
+        assertThat(actualJobInstance.getJobName(), is("jobPrincipal"));
         assertThat(actualJobExitStatus.getExitCode(), is("FAILED"));
     }
     private JobLauncherTestUtils getJobLauncherTestUtils(Job job) {

@@ -46,7 +46,7 @@ public class BatchConfig extends DefaultBatchConfigurer {
     /**
      * Nom du job
      */
-    private static final String JOB_NAME = "listStudentsJob";
+    private static final String JOB_NAME = "jobPrincipal";
     private static final String STEP_NAME = "step1";
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
@@ -129,8 +129,8 @@ public class BatchConfig extends DefaultBatchConfigurer {
                 .build();
     }
     @Bean
-    @Qualifier("JobA")
-    public Job listStudentsJob(Step step, JobListener jobListener) {
+    @Qualifier("jobPrincipal")
+    public Job jobPrincipal(Step step, JobListener jobListener) {
         return jobBuilderFactory.get(JOB_NAME)
                 .listener(jobListener)
                 .flow(step)

@@ -22,7 +22,7 @@ public class BatchJpaApplication implements CommandLineRunner {
 		context.register(PersistenceJPAConfig.class);
 
 		context.refresh();
-		runJob(context, "listStudentsJob");
+		runJob(context, "jobPrincipal");
 	}
 	private static void runJob(AnnotationConfigApplicationContext context, String batchJobName) {
 		final JobLauncher jobLauncher = (JobLauncher) context.getBean("jobLauncher");
