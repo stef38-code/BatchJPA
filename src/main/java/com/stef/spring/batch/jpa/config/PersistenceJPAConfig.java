@@ -21,6 +21,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Properties;
 
+/**
+ * Configuration de la connexion db afin d'utiliser JpaRepository
+ */
 @Configuration
 @SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
 @EnableJpaRepositories(basePackages = {"com.stef.spring.batch.jpa.repository"})
