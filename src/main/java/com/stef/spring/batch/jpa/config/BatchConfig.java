@@ -1,6 +1,5 @@
 package com.stef.spring.batch.jpa.config;
 
-import com.stef.spring.batch.jpa.exception.OtherException;
 import com.stef.spring.batch.jpa.listener.job.JobListener;
 import com.stef.spring.batch.jpa.listener.processor.ProcessListener;
 import com.stef.spring.batch.jpa.listener.reader.ReaderListener;
@@ -125,10 +124,10 @@ public class BatchConfig extends DefaultBatchConfigurer {
                 /**
                  * Defnition d'un nombre max d'erreur pour une ou plusieurs exception
                  * ajoute via .skip
-                 */
+
                 .skipLimit(4) //uniquement 4 erreurs pour la classe ci-dessous
                 .skip(OtherException.class)
-
+                */
                 /**
                  * Lecture des données en db avec son listener
                  */

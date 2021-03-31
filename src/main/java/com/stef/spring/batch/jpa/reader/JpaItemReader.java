@@ -1,7 +1,6 @@
 package com.stef.spring.batch.jpa.reader;
 
 import com.stef.spring.batch.jpa.exception.IDTwoExceptionReader;
-import com.stef.spring.batch.jpa.exception.OtherException;
 import com.stef.spring.batch.jpa.model.Pays;
 import com.stef.spring.batch.jpa.repository.PaysRepository;
 import org.springframework.batch.core.StepExecution;
@@ -39,9 +38,10 @@ public class JpaItemReader implements ItemReader< Pays > {
             if(element.getId() == 2){
                 throw new IDTwoExceptionReader("Erreur volontaire sur id: {0}",element.getId());
             }
-            if(element.getId() % 4 == 0){
+            /*if(element.getId() % 4 == 0){
+            //Pour test le nombre skipLimit(4)
                 throw new OtherException("Erreur aléatoire sur id: {0}",element.getId());
-            }
+            }*/
             return element;
         } else {
             return null;

@@ -32,13 +32,14 @@ class ProcessorTest {
         element.setAlphaDeux("");
         element.setAlphaTrois("");
         element.setNomEn("");
-        element.setNomFr("");
+        element.setNomFr("kHLUcfST");
 
 
         PaysFrancais elementTraite = processor.process(element);
 
         // AssertJ
         assertThat(elementTraite).isNotNull();
+        assertThat(elementTraite.getNomFr()).isEqualTo(element.getNomFr());
     }
     @Test
     void testProcess_skip() throws Exception {

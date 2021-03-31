@@ -14,8 +14,16 @@
     <name>Batch Jpa</name>
     <description>Batch jpa entree et sortie</description>
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
+        <mockito.version>3.6.28</mockito.version>
+        <mapstruct.version>1.4.2.Final</mapstruct.version>
+        <meanbean.version>2.0.3</meanbean.version>
         <pojo-tester.version>0.7.6</pojo-tester.version>
+        <reflections.version>0.9.11</reflections.version>
+        <lombok.version>1.18.18</lombok.version>
         <jacoco.version>0.8.6</jacoco.version>
         <!-- -->
         <start-class>com.stef.spring.batch.jpa.BatchJpaApplication</start-class>
@@ -62,12 +70,13 @@
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
-            <version>1.4.2.Final</version>
+            <version>${mapstruct.version}</version>
         </dependency>
+
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct-processor</artifactId>
-            <version>1.4.2.Final</version>
+            <version>${mapstruct.version}</version>
             <scope>provided</scope>
         </dependency>
         <!-- test sur les classes entities, dto sans intelligence -->
@@ -80,7 +89,7 @@
         <dependency>
             <groupId>org.meanbean</groupId>
             <artifactId>meanbean</artifactId>
-            <version>2.0.3</version>
+            <version>${meanbean.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -88,13 +97,13 @@
         <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
-            <version>0.9.11</version>
+            <version>${reflections.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.6.28</version>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -116,20 +125,20 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>${maven.compiler.plugin.version}</version>
                 <configuration>
-                    <source>1.8</source> <!-- depending on your project -->
-                    <target>1.8</target> <!-- depending on your project -->
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.18</version>
+                            <version>${lombok.version}</version>
                         </path>
                         <path>
                             <groupId>org.mapstruct</groupId>
                             <artifactId>mapstruct-processor</artifactId>
-                            <version>1.4.2.Final</version>
+                            <version>${mapstruct.version}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
