@@ -38,6 +38,10 @@ public class JpaItemReader implements ItemReader< Pays > {
             if(element.getId() == 2){
                 throw new IDTwoExceptionReader("Erreur volontaire sur id: {0}",element.getId());
             }
+            /*if(element.getId() % 4 == 0){
+            //Pour test le nombre skipLimit(4)
+                throw new OtherException("Erreur aléatoire sur id: {0}",element.getId());
+            }*/
             return element;
         } else {
             return null;

@@ -1,8 +1,5 @@
 package com.stef.spring.batch.jpa.config;
 
-import com.stef.spring.batch.jpa.exception.IDFourExceptionWriter;
-import com.stef.spring.batch.jpa.exception.IDThreeExceptionProcessor;
-import com.stef.spring.batch.jpa.exception.IDTwoExceptionReader;
 import com.stef.spring.batch.jpa.listener.job.JobListener;
 import com.stef.spring.batch.jpa.listener.processor.ProcessListener;
 import com.stef.spring.batch.jpa.listener.reader.ReaderListener;
@@ -32,6 +29,9 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+/**
+ * Classe de configuration du job,step,......
+ */
 @Configuration
 @EnableBatchProcessing
 @ComponentScan("com.stef.spring.batch.jpa.*")
@@ -46,13 +46,14 @@ public class BatchConfig extends DefaultBatchConfigurer {
     /**
      * Nom du job
      */
-    private static final String JOB_NAME = "listStudentsJob";
+    private static final String JOB_NAME = "jobPrincipal";
     private static final String STEP_NAME = "step1";
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
 
     @Autowired
     private StepBuilderFactory stepBuilderFactory;
+
     /*******************************************
      * Liste des beans
      ********************************************/
@@ -70,6 +71,7 @@ public class BatchConfig extends DefaultBatchConfigurer {
     public JpaItemWriter writer() {
         return new JpaItemWriter();
     }
+
     @Bean
     public StepListener stepExecutionListener() {
         return new StepListener();
@@ -94,54 +96,84 @@ public class BatchConfig extends DefaultBatchConfigurer {
     public WriterListener writerListener() {
         return new WriterListener();
     }
+
     /**
-     *
-     * @return
+     * Defnition de la structure d'un step
+     * @return Step
      */
     @Bean
-    public Step studentStep(JpaItemReader reader,
-                            JpaItemWriter writer,
-                            Processor processor,
-                            StepListener stepListener,
-                            ReaderListener readerListener,
-                            ProcessListener processListener,
-                            WriterListener writerListener
+    public Step step1(JpaItemReader reader,
+                      JpaItemWriter writer,
+                      Processor processor,
+                      StepListener stepListener,
+                      ReaderListener readerListener,
+                      ProcessListener processListener,
+                      WriterListener writerListener
     ) {
-        return stepBuilderFactory.get(STEP_NAME)
+        return stepBuilderFactory.get(STEP_NAME) // definition du nom du step
+                /**
+                 * le nombre de données lues et traitées à la fois par le Reader
+                 */
                 .< Pays, PaysFrancais >chunk(chunkSize)
                 //gestion des erreurs a eviter -> le programme continu
                 .faultTolerant()
-                //Definition d'une police pour gerer
-                // les exception pendant le traitement
+                /**
+                 * Gestion de la tolérance aux fautes
+                 */
                 .skipPolicy(new PersonnalSkipPolicy())
-                //Les exceptions qui vont être surveillées
-                .skip(IDTwoExceptionReader.class)
-                .skip(IDThreeExceptionProcessor.class)
-                .skip(IDFourExceptionWriter.class)
-                //Lecture des données en db avec son listener
+                /**
+                 * Defnition d'un nombre max d'erreur pour une ou plusieurs exception
+                 * ajoute via .skip
+
+                .skipLimit(4) //uniquement 4 erreurs pour la classe ci-dessous
+                .skip(OtherException.class)
+                */
+                /**
+                 * Lecture des données en db avec son listener
+                 */
                 .reader(reader).listener(readerListener)
-                //transformation des données avec son listener
+                /**
+                 * Transformation des données avec son listener
+                 */
                 .processor(processor).listener(processListener)
-                //Ecriture des données transformées en db avec son listener
+                /**
+                 * Ecriture des données transformées en db avec son listener
+                 */
+
                 .writer(writer).listener(writerListener)
-                //listener du step
+                /**
+                 * Listener du step
+                 */
                 .listener(stepListener)
                 .build();
     }
+
+    /**
+     * Definition du job
+     * Le nom de la méthode sera le nom du job appele
+     * @param step le step du job
+     * @param jobListener le listener du job
+     * @return Job
+     */
     @Bean
-    @Qualifier("JobA")
-    public Job listStudentsJob(Step step, JobListener jobListener) {
+    @Qualifier("jobPrincipal")
+    public Job jobPrincipal(Step step, JobListener jobListener) {
         return jobBuilderFactory.get(JOB_NAME)
+                /**
+                 * Listener sur le job
+                 */
                 .listener(jobListener)
+                /**
+                 *  Ajout du step au batch
+                 */
                 .flow(step)
                 .end()
                 .build();
     }
+
     /*
-   Despite trying to create an in-memory JobRepository, the context will not
-   load if it finds more than one DataSource bean. If the intent is to use an
-   in-memory repository, the absence or presence of a DataSource should be
-   irrelevant.
+        Definition des tables du job en mémoire, tout simplement pour ne pas les créer dans notre DB,
+         spring batch a ses propres tables cf https://docs-stage.spring.io/spring-batch/docs/4.0.x/reference/html/schema-appendix.html
     */
     @Override
     protected JobRepository createJobRepository() throws Exception {

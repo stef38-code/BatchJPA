@@ -11,6 +11,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Listener sur le job
+ */
 @Component
 @Slf4j
 public class JobListener implements JobExecutionListener {
@@ -19,6 +22,10 @@ public class JobListener implements JobExecutionListener {
         log.info("--------------- Debug du job ---------------");
     }
 
+    /**
+     * Evenement de fin de job
+     * @param jobExecution
+     */
     @Override
     public void afterJob(JobExecution jobExecution) {
         Collection<StepExecution> listeStep = jobExecution.getStepExecutions();
@@ -46,6 +53,10 @@ public class JobListener implements JobExecutionListener {
 
     }
 
+    /**
+     * Calcul tu temps de traitement du step
+     * @param stepExecution le step
+     */
     private void infoTempsStep(StepExecution stepExecution){
         Date dateDebut = stepExecution.getStartTime();
         Date dateFin = stepExecution.getEndTime();

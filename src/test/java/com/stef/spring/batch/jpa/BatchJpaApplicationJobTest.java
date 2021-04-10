@@ -5,7 +5,6 @@ import com.stef.spring.batch.jpa.config.BatchTestConfiguration;
 import com.stef.spring.batch.jpa.config.PersistenceJPAConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.ExitStatus;
@@ -41,7 +40,7 @@ import static org.junit.Assert.assertThat;
 @Slf4j
 class BatchJpaApplicationJobTest {
     @Autowired
-    @Qualifier("JobA")
+    @Qualifier("jobPrincipal")
     private Job job;
 
     @Autowired
@@ -64,20 +63,10 @@ class BatchJpaApplicationJobTest {
         JobInstance actualJobInstance = jobExecution.getJobInstance();
         ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
 //
-        assertThat(actualJobInstance.getJobName(), is("listStudentsJob"));
+        assertThat(actualJobInstance.getJobName(), is("jobPrincipal"));
         assertThat(actualJobExitStatus.getExitCode(), is("COMPLETED"));
     }
-    @Test
-    @Disabled
-     void tesLaunchJob_Failed() throws Exception {
 
-        JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-        JobInstance actualJobInstance = jobExecution.getJobInstance();
-        ExitStatus actualJobExitStatus = jobExecution.getExitStatus();
-//
-        assertThat(actualJobInstance.getJobName(), is("listStudentsJob"));
-        assertThat(actualJobExitStatus.getExitCode(), is("FAILED"));
-    }
     private JobLauncherTestUtils getJobLauncherTestUtils(Job job) {
         JobLauncherTestUtils jobLauncherTestUtils = new JobLauncherTestUtils();
         jobLauncherTestUtils.setJobLauncher(jobLauncher);
